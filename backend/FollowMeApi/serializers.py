@@ -16,6 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
             return user
         
 
+# Commited this code
 
 class AuthUserSerializer(serializers.ModelSerializer):
     class Meta:
