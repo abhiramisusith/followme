@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from .models import *
 
@@ -11,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {'Password': {'write_only': True}}
 
         def create(self, validated_data):
-            user = get_user_model.objects.create_user(validated_data['Username'], validated_data['Email'], validated_data['Password'])
+            user = users.objects.create_user(validated_data['Username'], validated_data['Email'], validated_data['Password'])
 
             return user
         
@@ -29,7 +28,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = users
-        fields = '__all__'
+        fields = ['Username','Email','FirstName','LastName']
         
 
 #change password

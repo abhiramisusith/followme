@@ -22,7 +22,6 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
 from FollowMeApi.Utility import CustomResponse
-
 from .models import *
 from .serializers import *
 
@@ -51,7 +50,7 @@ class CustomUserController(APIView):
         Password = Parameters["Password"]
 
         try:
-            UserExist = Users.objects.get(Email=EmailAddress, Password=Password)
+            UserExist = users.objects.get(Email=EmailAddress, Password=Password)
             serialized_data = CustomUserSerializer(UserExist)
             return Response({"StatusCode": status.HTTP_200_OK, "Message": "Success", "Result": serialized_data.data})
         except  BaseException as ex:
@@ -75,7 +74,7 @@ class ChangePasswordView(generics.UpdateAPIView):
     An endpoint for changing password.
     """
     serializer_class = ChangePasswordSerializer
-    model = User
+    model = users
     permission_classes = (IsAuthenticated,)
 
     def get_object(self, queryset=None):
@@ -119,5 +118,5 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
         # from:
         "noreply@somehost.local",
         # to:
-        [reset_password_token.user.email]
+        [reset_password_token.users.email]
     )
