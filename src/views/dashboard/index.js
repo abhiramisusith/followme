@@ -6,11 +6,12 @@ import CustomToggle from '../../components/dropdowns'
 import ShareOffcanvas from '../../components/share-offcanvas'
 import {getPosts, postComment} from '../../api/post/post'
 import axios from "axios";
-<<<<<<< HEAD
-import {postCreatePost,getGetPosts,getGetPostByPostId,postCommentReply ,getLikePost,getUnLikePost,postImage} from '../../api/post/post'
-=======
-import {postCreatePost,getGetPosts,getGetPostByPostId,postCommentReply ,getLikePost,getUnLikePost,getLikeComment,getUnLikeComment,getHidePost } from '../../api/post/post'
->>>>>>> b76533a11941e3963f17d25941c842e189dacf8f
+
+import {postCreatePost,
+    getGetPosts,
+    postImage,
+    postCommentReply ,getLikePost,getUnLikePost,getLikeComment,getUnLikeComment,getHidePost } from '../../api/post/post'
+
 import { useSelector } from 'react-redux'
 
 

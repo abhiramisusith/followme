@@ -94,9 +94,9 @@ const UserProfile =() =>{
   const [islikedcomment,setIslikedComment] =useState(false)
   const [comment_Id,setComment_Id]=useState(0)
  const [text,setText]=useState('')
- /////////////////
+
    const [post,setPost] = useState({
-<<<<<<< HEAD
+
        Text: "",
        Visibility: 1,
        Location: "internet city",
@@ -105,35 +105,13 @@ const UserProfile =() =>{
          2
        ]
      })
-     const [commentorreply ,setCommentorReply] = useState({
-        Text:'',
-        Post_Id:0,
-        ParentComment_Id:0
-     })
  
-     const getlikes = async(id)=>{
-       
-      setPost_Id(id)
-      const token = sessionStorage.getItem('Token')
-      setIsliked(!isliked)
-      if(isliked==false)
-      {
-          
-      await getLikePost({id,token}).then(res=>res.data['Result'])
-      }else{
-      
-      await getUnLikePost({id,token}).then(res=>res.data['Result'])
-      }
-      }
+ 
+    
  
 
-=======
-   Text: "raza and ,mostafa = love",
-   Visibility: 1,
-   Location: "internet city",
-   ImageUrls: "no problem",
-   UserTagId: [2]
-   })
+
+
    const [commentorreply ,setCommentorReply] = useState({
    Text:'',
    Post_Id:0,
@@ -154,7 +132,7 @@ const UserProfile =() =>{
    setIslikedComment(!islikedcomment)
    await getUnLikeComment({id,token}).then(res=>res.data['Result']).then(alert("unliked"))
    }
->>>>>>> b76533a11941e3963f17d25941c842e189dacf8f
+
 
    const getlikes = async(id)=>{
    setPost_Id(id)
@@ -215,11 +193,7 @@ const UserProfile =() =>{
 
 return(
       <>
-<<<<<<< HEAD
-  
-=======
          {console.log(allPost)}
->>>>>>> b76533a11941e3963f17d25941c842e189dacf8f
          <Container>
         
             <Row>
