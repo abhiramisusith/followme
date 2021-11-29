@@ -6,7 +6,7 @@ import { Switch,Route } from 'react-router'
 //pages
 import Groups from '../views/dashboard/app/groups';
 import GroupDetail from '../views/dashboard/app/group-detail';
-import FriendList from '../views/dashboard/app/friend-list'
+import Signal from '../views/dashboard/app/friend-list'
 import ProfileImages from '../views/dashboard/app/profile-images';
 import ProfileVideos from '../views/dashboard/app/profile-videos';
 import ProfileEvents from '../views/dashboard/app/profile-events';
@@ -14,7 +14,7 @@ import EventDetail from '../views/dashboard/app/event-detail';
 import Calendar from '../views/dashboard/app/calendar';
 import Birthday from '../views/dashboard/app/birthday';
 import Weather from '../views/dashboard/app/weather'
-import Music from '../views/dashboard/app/music';
+import Market from '../views/dashboard/app/music';
 import aboutus from '../views/dashboard/app/aboutus';
 import download from '../views/dashboard/app/download';
 import contactus from '../views/dashboard/app/contactus';
@@ -32,7 +32,7 @@ const Layout1Router = () => {
                 <Route path="/dashboards/app/download"          component={download}></Route>    
                 <Route path="/dashboards/app/groups"                component={Groups}></Route>
                 <Route path="/dashboards/app/group-detail"          component={GroupDetail}></Route>
-                <Route path="/dashboards/app/friend-list"           component={FriendList} />
+                <Route path="/dashboards/app/signal"           component={Signal} />
                 <Route path="/dashboards/app/profile-images"        component={ProfileImages} />
                 <Route path="/dashboards/app/profile-videos"        component={ProfileVideos} />
                 <Route path="/dashboards/app/profile-events"        component={ProfileEvents} />
@@ -40,7 +40,7 @@ const Layout1Router = () => {
                 <Route path="/dashboards/app/calendar"              component={Calendar}/>
                 <Route path="/dashboards/app/birthday"              component={Birthday} />
                 <Route path="/dashboards/app/weather"               component={Weather}/>
-                <Route path="/dashboards/app/music"                 component={Music} />
+                <Route path="/dashboard/app/market"                 component={Market} />
                 <Route path="/dashboards/store/store-category-grid" component={CatergoryGrid}/>
                 <Route path="/dashboards/store/store-category-list" component={CatergoryList}/>
                 <Route path="/dashboards/store/store-detail"        component={StoreDetail}/>

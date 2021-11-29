@@ -4,13 +4,13 @@ import axios from "axios";
 const apis = axios.create({
     baseURL: 'http://192.168.0.115/api/Post'
 })
-const postImage = payload => apis.post("/ImageUpload",payload.fromData,{headers:{"Authorization":`Bearer ${payload.token}`}})
+const postImage = payload => apis.post("/ImageUpload", payload.fromData, { headers: { "Authorization": `Bearer ${payload.token}` } })
 const postCreatePost = payload => apis.post("/CreatePost", payload.post, { headers: { "Authorization": `Bearer  ${payload.token}` } })
 const getGetPosts = (payload) => apis.get(`/GetPosts?PageSize=${payload.data.pagesize}&pageno=${payload.data.pageno}`, { headers: { "Authorization": `Bearer ${payload.token}` } })
 const getGetPostsByUserId = (payload) => apis.get(`/GetPostsByUserId?User_Id=${payload.data.userid}&PageSize=${payload.data.pagesize}&pageno=${payload.data.pageno}`, { headers: { "Authorization": `Bearer ${payload.token}` } })
 const getGetCommentsByPostId = (payload) => apis.get(`/GetCommentsByPostId?Post_Id=${payload.data.Post_Id}&User_Id=${payload.data.userid}&PageSize=${payload.data.pagesize}&pageno=${payload.data.pageno}`, { headers: { "Authorization": `Bearer ${payload.token}` } })
 const getGetPostByPostId = (payload) => apis.get(`/GetPostByPostId?Post_Id=${payload.data.Post_Id}`, { headers: { "Authorization": `Bearer ${payload.token}` } })
-const getTagFriend = () => apis.get("/TagFriend")
+const getTagFriend = (payload) => apis.get(`/TagFriend?name=${payload.name}`, { headers: { "Authorization": `Bearer ${payload.token}` } })
 const getLikePost = (payload) => apis.get(`/LikePost?Post_Id=${payload.id}`, { headers: { "Authorization": `Bearer ${payload.token}` } })
 const getUnLikePost = (payload) => apis.get(`/UnLikePost?Post_Id=${payload.id}`, { headers: { "Authorization": `Bearer ${payload.token}` } })
 const getLikeComment = (payload) => apis.get(`/LikeComment?Comment_Id=${payload.id}`, { headers: { "Authorization": `Bearer ${payload.token}` } })

@@ -38,11 +38,11 @@ const Sidebar = () => {
                         <li className={`${location.pathname === '#/dashboard/app/profile' ? 'active' : ''}`}>
                            <Link to="/dashboard/app/market" ><i className="las la-store-alt"></i><span>Market</span></Link>
                         </li>
-                        <li className={`${location.pathname === '/dashboards/app/friend-list' ? 'active' : ''}`}>
-                           <Link to="/dashboards/app/friend-list" ><i className="las la-signal"></i><span>Signal</span></Link>
+                        <li className={`${location.pathname === '/dashboards/app/signal' ? 'active' : ''}`}>
+                           <Link to="/dashboards/app/signal" ><i className="las la-signal"></i><span>Signal</span></Link>
                         </li>
                         <li className={`${location.pathname === '/dashboard/app/friend-profile' ? 'active' : ''}`}>
-                           <Link to="/dashboard/app/friend-profile" ><i className="las la-user-friends"></i><span>WEBTRADER</span></Link>
+                           <Link to="/dashboard/app/web-trader" ><i className="las la-user-friends"></i><span>WEBTRADER</span></Link>
                         </li>
                         <li className={`${location.pathname === '/dashboards/app/aboutus' ? 'active' : ''}`}>
                            <Link to="/dashboards/app/aboutus" ><i className="las la-exclamation-circle"></i><span> About us</span></Link>
