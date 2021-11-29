@@ -75,6 +75,15 @@ const UserProfile =() =>{
    const handleClose = () => setShow(false);
    const handleShow = () => setShow(true);
    const [allPost,setAllPost] = useState([])
+
+ 
+ 
+    
+ 
+
+
+
+
    const [tagName,setTagName]=useState('')
    const [allFollower,setAllFollower] = useState([])
    const [allNotification,setAllNotification] = useState([])
@@ -93,11 +102,15 @@ const UserProfile =() =>{
       UserTagId: []
   })
   const [image,setImage] = useState([])
+
    const [commentorreply ,setCommentorReply] = useState({
    Text:'',
    Post_Id:0,
    ParentComment_Id:0
    })
+
+
+
    const getlikecomment = async (id) => {
       setComment_Id(id)
       console.log(comment_Id)
@@ -117,6 +130,7 @@ const UserProfile =() =>{
       getPostImage()
     };
  
+
    const getlikes = async(id)=>{
    setPost_Id(id)
    const token = sessionStorage.getItem('Token')
@@ -209,8 +223,11 @@ useEffect(() => {
 }, [isliked,islikedcomment])
 return(
       <>
-      {console.log(allNotification)}
+
+
+      {console.log(allPost)}
         <Container>
+
         
             <Row>
                <Col sm={12}>

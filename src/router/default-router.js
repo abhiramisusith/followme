@@ -94,7 +94,7 @@ const DefaultRouter = () => {
                     <Route path="/dashboard/app/profile"                  component={userProfile} />
                     <Route path="/dashboard/app/settings"                  component={Settings} />
                     <Route path="/dashboard/app/user-privacy-setting"     component={UserPrivacySetting}/>
-                    <Route path="/dashboard/app/friend-profile"           component={FriendProfile} />
+                    <Route path="/dashboard/app/web-trader"           component={FriendProfile} />
                     <Route path="/dashboard/app/profile-badges"           component={ProfileBadges} />
                     <Route path="/dashboard/app/profile-forum"            component={ProfileForums} />
                     <Route path="/dashboard/app/chat"                     component={Chat} />
