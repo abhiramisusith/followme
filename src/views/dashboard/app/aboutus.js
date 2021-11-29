@@ -41,7 +41,7 @@ const Aboutus = () => {
           <CountUp
           start={0}
           end={147}
-          duration={5} 
+          duration={8} 
           style={{fontSize:"30px",fontWeight:"600",color:"red"}}
         /> 
         <p style={{fontSize:"10px"}}>Connected Accounts</p>
@@ -56,7 +56,7 @@ const Aboutus = () => {
           <CountUp
           start={0}
           end={3052}
-          duration={5} 
+          duration={8} 
           style={{fontSize:"30px",fontWeight:"600",color:"red"}}
         /> 
         <p style={{fontSize:"10px"}}>Number of Orders</p>
@@ -71,7 +71,7 @@ const Aboutus = () => {
           <CountUp
           start={0}
           end={852}
-          duration={5} 
+          duration={8} 
           style={{fontSize:"30px",fontWeight:"600",color:"red"}}
         /> 
         <p style={{fontSize:"10px"}}>Trading Volume (USD)</p>
@@ -80,37 +80,7 @@ const Aboutus = () => {
         </Col>
           </Row>
           <Row>
-            {/* <div className="col-lg-4 col-md-6">
-              <div className="user-images position-relative overflow-hidden mb-3 mt-3">
-                <img
-                  src={accountconnection}
-                  className="img-fluid rounded w-25"
-                  alt="Responsive"
-                />
-                Account connection
-              </div>
-            </div> */}
-            {/* <div className="col-lg-4 col-md-6">
-              <div className="user-images position-relative overflow-hidden mb-3 mt-3">
-                <img
-                  src={orders}
-                  className="img-fluid rounded w-25"
-                  alt="Responsive"
-                  
-                />
-                Orders
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6">
-              <div className="user-images position-relative overflow-hidden mb-3 mt-3">
-                <img
-                  src={trade}
-                  className="img-fluid rounded w-25"
-                  alt="Responsive"
-                />
-                Trading Volume (USD)
-              </div>
-            </div> */}
+          
             <div className="col-lg-12 col-md-12 mt-5" >
               <div className="user-images position-relative overflow-hidden mb-3">
                 <div className="ratio ratio-16x9">

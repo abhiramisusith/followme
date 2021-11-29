@@ -8,7 +8,7 @@ import axios from "axios";
 import Moment from 'react-moment';
 import moment from 'moment';
 import { getGetFollowers, getGetTopFollowers, getGetFollowings } from '../../../api/followfollower/followfollower'
-import { postCreatePost,getGetPostsByUserId,postComment,postCommentReply,getLikePost,getUnLikePost,getLikeComment,getUnLikeComment } from '../../../api/post/post'
+import { postCreatePost,getGetPostsByUserId,postComment,postCommentReply,getLikePost,getUnLikePost,getLikeComment,getUnLikeComment,postImage } from '../../../api/post/post'
 // images
 import user13 from '../../../assets/images/user/13.jpg'
 import user14 from '../../../assets/images/user/14.jpg'
@@ -77,13 +77,14 @@ const UserProfile =() =>{
    const [allPost,setAllPost] = useState([])
    const [tagName,setTagName]=useState('')
    const [allFollower,setAllFollower] = useState([])
+   const [allNotification,setAllNotification] = useState([])
    const [allFollowings,setAllFollowings] = useState([])
    const [iscomment,setIsComment] = useState(false);
    const [isliked,setIsliked] =useState(false)
    const [islikedcomment,setIslikedComment] =useState(false)
    const [comment_Id,setComment_Id]=useState(0)
    const [text,setText]=useState('')
-
+  
    const [post, setPost] = useState({
       Text: " ",
       Visibility: 1,
@@ -91,6 +92,7 @@ const UserProfile =() =>{
       ImageUrls: "",
       UserTagId: []
   })
+  const [image,setImage] = useState([])
    const [commentorreply ,setCommentorReply] = useState({
    Text:'',
    Post_Id:0,
@@ -111,7 +113,8 @@ const UserProfile =() =>{
   }
    const handleClick = async () => {
       const token = sessionStorage.getItem("Token");
-      await postCreatePost({ post, token }).then((res) => console.log(res.data));
+      // await postCreatePost({ post, token }).then((res) => console.log(res.data));
+      getPostImage()
     };
  
    const getlikes = async(id)=>{
@@ -163,9 +166,9 @@ const UserProfile =() =>{
    console.log(commentorreply)
    console.log(text)
    } 
-   const getPosts = async()=>{
+   const getPosts = async(id)=>{
    const token = sessionStorage.getItem('Token')
-   const data = {userid:2,pagesize:13,pageno:0};
+   const data = {userid:id,pagesize:13,pageno:0};
    await getGetPostsByUserId({data,token}).then(res=>setAllPost(res.data['Result'].Posts))
    }
    const getfollower = async ()=>{
@@ -180,21 +183,33 @@ const UserProfile =() =>{
    await getGetTopFollowers({token}).then(res =>console.log(res.data))
    }
 }
+   const getnotifi = async (id)=>{
+      const token = sessionStorage.getItem('Token')
+      const data = {userid:id,SignInType:0};
+      await getGetPostsByUserId({data,token}).then(res=>setAllNotification(res.data['Result']))
+   }
+   const getPostImage =async ()=>{
+      const imageData= new FormData();
+      imageData.append('image',image);
+      const token= sessionStorage.getItem("Token");
+      await postImage({imageData,token}).then(res=>res.data).then(alert('we post an image'))
+   }
 const newDate = (date)=>{
    var createdDateTime = new Date(date + 'Z');
-   
    return createdDateTime;
   
 }
 
 useEffect(() => {
-   getPosts()
+   getPosts(localStorage.getItem('Id'))
+   getfollower()
    getfollowings()
+   getnotifi()
    // gettopfollowers()
 }, [isliked,islikedcomment])
 return(
       <>
-      {console.log(allPost)}
+      {console.log(allNotification)}
         <Container>
         
             <Row>
@@ -436,14 +451,11 @@ return(
                                     <ul className=" post-opt-block d-flex list-inline m-0 p-0 flex-wrap">
                                         <li className="me-3 mb-md-0 mb-2">
                                           <label className=" btn btn-soft-primary"> <img src={img14} alt="" /> Photo/Video
-                                               <input type="file" style={{display:"none"}}  placeholder="Enter Image"onChange={(e)=>setPost({
-                                                  ...post,
-                                                  ImageUrls:e.target.value
-                                               })} /></label>
+                                               <input type="file" style={{display:"none"}}  placeholder="Enter Image"onChange={(e)=>setImage(e.target.files[0])} /></label>
                                                </li>
                                         <li className="me-3 mb-2">  
                                             
-                                            <button className=" btn btn-soft-primary" onClick={getfollower}> 
+                                            <button className=" btn btn-soft-primary"> 
                                                 <div className="card-header-toolbar d-flex align-items-center" >
                                                     <Dropdown onChange={()=>setTagName}>
                                                         <Dropdown.Toggle as='div'>
@@ -515,7 +527,7 @@ return(
                                                    </li>
                                             <li className="col-md-6 mb-3">
                                                 <div className="bg-soft-primary rounded p-2 pointer me-3"><Link to="#"></Link>
-                                                    <button className="text-primary" style={{ background: "transparent", border: 0 }} onClick={getfollower}>
+                                                    <button className="text-primary" style={{ background: "transparent", border: 0 }} >
                                                         <div className="card-header-toolbar d-flex align-items-center" >
                                                             <Dropdown onChange={() => setTagName}>
                                                                 <Dropdown.Toggle as='div'>
@@ -747,7 +759,7 @@ return(
                                                          </Dropdown>
                                                     </div>
                                                 </div>
-                                                <ShareOffcanvas sharecount={item.ShareCount} />
+                                                {/* <ShareOffcanvas sharecount={item.ShareCount} /> */}
                                             </div>
                                         <hr/>
                                         <ul className="post-comments list-inline p-0 m-0">
@@ -772,7 +784,7 @@ return(
                                                                                 }
                                                                            
                                                                         </a>
-                                                                    
+                                                                    <span style={{fontSize:"14px",marginRight:"7px",color:"rgb(80, 181, 255)"}}>{val.LikesCount}</span>
                                                                     <Link to="#"onClick={()=>{
                                                                        setTimeout(()=>{
                                                                         setIsComment(false)
@@ -803,12 +815,8 @@ return(
                                                Text:e.target.value,
                                                 Post_Id:item.Id
                                             })} />
-                                            <div className="comment-attagement d-flex">
-                                                <Link to="#"><i className="ri-link me-3"></i></Link>
-                                                <Link to="#"><i className="ri-user-smile-line me-3"></i></Link>
-                                                <Link to="#"><i className="ri-camera-line me-3"></i></Link>
-                                           </div>
-                                            <input type="submit"  style={{backgroundColor:"#50b5ff",border:"0",color:"white",padding:"0px 15px"}} value="send"/> 
+                                           
+                                             <input type="submit" className="m-2 btn-lg btn-primary" style={{ backgroundColor: "#50b5ff", border: "0", color: "white", padding: "0px 15px" }} value="Comment" />
                                         </form>
                                     </div>
                                 </Card.Body>

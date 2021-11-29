@@ -20,7 +20,7 @@ const postCommentReply = (payload) => apis.post("/CommentReply", payload.comment
 const getRepost = () => apis.get("/Repost")
 const getHidePost = (payload) => apis.get(`/HidePost?Post_Id=${payload.id}`, { headers: { "Authorization": `Bearer ${payload.token}` } })
 const getHideAllPost = () => apis.get("/HideAllPost")
-const getGetTrends = () => apis.get("/GetTrends")
+const getGetTrends = (payload) => apis.get("/GetTrends", { headers: { "Authorization": `Bearer ${payload.token}` } })
 const getTurnOffNotifications = () => apis.get("/TurnOffNotifications")
 const getReportPost = () => apis.get("/ReportPost")
 

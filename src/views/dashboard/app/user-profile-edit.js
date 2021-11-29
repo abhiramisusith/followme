@@ -109,8 +109,12 @@ const UserProfileEdit =() =>{
                                               <Form.Group className="form-group col-sm-6">
                                                   <Form.Label className="form-label">Age:</Form.Label>
                                                   <Form.Select className="form-select" aria-label="Default select example 2">
-                                                  <option>46-62</option>
-                                                  <option>63 </option>
+                                                  <option>18-25</option>
+                                                  <option>25-30</option>
+                                                  <option>30-35</option>
+                                                  <option>35-40</option>
+                                                  <option>40-50</option>
+                                                  <option>50+</option>
                                                   </Form.Select>
                                               </Form.Group>
                                               <Form.Group className="form-group col-sm-6">

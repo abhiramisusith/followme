@@ -5,8 +5,8 @@ import Card from '../../components/Card'
 import CustomToggle from '../../components/dropdowns'
 import ShareOffcanvas from '../../components/share-offcanvas'
 import { postComment, getGetPosts } from '../../api/post/post'
-import { postCreatePost, postCommentReply, getLikePost, getUnLikePost, getLikeComment, getUnLikeComment, getHidePost } from '../../api/post/post'
-import { getGetFollowers, getGetFollowings, getGetTopFollowers } from '../../api/followfollower/followfollower'
+import { postCreatePost, postCommentReply, getLikePost, getUnLikePost, getLikeComment, getUnLikeComment, getHidePost,getGetTrends } from '../../api/post/post'
+import { getFollow,getUnFollow,getGetFollowers, getGetFollowings, getGetTopFollowers } from '../../api/followfollower/followfollower'
 import { useSelector } from 'react-redux'
 import Moment from 'react-moment';
 //image
@@ -31,11 +31,14 @@ const Index = () => {
     const [iscomment, setIsComment] = useState(false);
     const [allPost, setAllPost] = useState([])
     const [allFollower, setAllFollower] = useState([])
+    const [allTrends,setAllTrends] = useState([])
     const [Post_Id, setPost_Id] = useState(0)
+    const [follow_Id,setFollow_Id]=useState(0)
     const [hidepostId, setHidePostId] = useState(0)
     const [text, setText] = useState('')
     const [islikedcomment, setIslikedComment] = useState(false)
     const [comment_Id, setComment_Id] = useState(0)
+    const [isfollowed,setIsFollowed]=useState(false)
     const [ishided, setIsHided] = useState(false)
     const [isliked, setIsliked] = useState(false)
     const [tagName, setTagName] = useState('')
@@ -162,24 +165,45 @@ const Index = () => {
     }
     const getfollower = async () => {
         const token = sessionStorage.getItem('Token')
+        setIsFollowed(!isfollowed)
         await getGetFollowers({ token }).then(res => setAllFollower(res.data['Result']))
+        setIsFollowed(!isfollowed)
     }
     const gettopfollowers = async () => {
         const token = sessionStorage.getItem('Token')
+        setIsFollowed(!isfollowed)
         await getGetTopFollowers({ token }).then(res => setAllFollower(res.data['Result']))
+      
+    }
+    const getfollow = async (id)=>{
+        setFollow_Id(id)
+        const token = sessionStorage.getItem('Token')
+        await getFollow({ id,token }).then(res => console.log(res.data['Result']))
+    }
+    const getunfollow = async (id)=>{
+        setFollow_Id(id)
+        const token = sessionStorage.getItem('Token')
+        await getUnFollow({ id,token }).then(res => console.log(res.data['Result']))
+    }
+    const gettrends = async () =>{
+        const token = sessionStorage.getItem('Token')
+        await getGetTrends({ token }).then(res => setAllTrends(res.data['Result']))
     }
     const newDate = (date)=>{
     var createdDateTime = new Date(date + 'Z');
     return createdDateTime;
+   
     }
   
     useEffect(() => {
         getPosts()
+        gettrends()
         getfollowings()
         // gettopfollowers()
-    }, [isliked,islikedcomment])
+    }, [isliked,islikedcomment,isfollowed,ishided])
     return (
         <>
+        {console.log(allTrends)}
         {console.log(allPost)}
             <Container>
                 <Row>
@@ -419,11 +443,17 @@ const Index = () => {
                                                         <div>
                                                             <h5 className="mb-0 d-inline-block">{item.User.FullName}</h5>
                                                             <span className="mb-0 ps-1 d-inline-block">Added a post</span>
+                                                           
                                                             <p className="mb-0 text-primary">
                                                             <Moment fromNow>{newDate(item.CreatedDate)}</Moment>
                                                         
                                                                 
                                                             </p>
+                                                        </div>
+                                                        <div>
+
+                                                            <button className="btn btn-sm btn-soft-primary" onClick={()=> item.IsUserFollow?<>{getunfollow(item.User_Id)}</>:getfollow(item.User_Id)}>{item.IsUserFollow?"Un Follow":"Follow"}</button>
+                                                            
                                                         </div>
 
                                                         <div className="card-post-toolbar">
@@ -432,6 +462,7 @@ const Index = () => {
                                                                     <i className="ri-more-fill"></i>
                                                                 </Dropdown.Toggle>
                                                                 <Dropdown.Menu className="dropdown-menu m-0 p-0">
+                                                              
                                                                     <Dropdown.Item className=" p-3" to="#">
                                                                         <div className="d-flex align-items-top">
                                                                             <div className="h4">
@@ -525,7 +556,7 @@ const Index = () => {
                                                         </Dropdown>
                                                     </div>
                                                 </div>
-                                                <ShareOffcanvas sharecount={item.ShareCount} />
+                                                {/* <ShareOffcanvas sharecount={item.ShareCount} /> */}
                                             </div>
                                             <hr />
                                             <ul className="post-comments list-inline p-0 m-0">
@@ -550,6 +581,7 @@ const Index = () => {
                                                                                 }
                                                                            
                                                                         </a>
+                                                                        <span style={{fontSize:"14px",marginRight:"7px",color:"rgb(80, 181, 255)"}}>{val.LikesCount}</span>
                                                                         {/* <Link to="#" onClick={()=>{getlikecomment(val.Id)}}>Like</Link> */}
                                                                         <Link to="#" onClick={() => {
                                                                             setTimeout(() => {
@@ -563,7 +595,6 @@ const Index = () => {
                                                                             })
                                                                         }} >reply</Link>
                                                                         <Link to="#">translate</Link>
-                                                                        <span> 5 min </span>
                                                                     </div>
                                                                 </div>
                                                             </>
@@ -580,12 +611,8 @@ const Index = () => {
                                                     Text: e.target.value,
                                                     Post_Id: item.Id
                                                 })} />
-                                                <div className="comment-attagement d-flex">
-                                                    <Link to="#"><i className="ri-link me-3"></i></Link>
-                                                    <Link to="#"><i className="ri-user-smile-line me-3"></i></Link>
-                                                    <Link to="#"><i className="ri-camera-line me-3"></i></Link>
-                                                </div>
-                                                <input type="submit" style={{ backgroundColor: "#50b5ff", border: "0", color: "white", padding: "0px 15px" }} value="send" />
+                                               
+                                                <input type="submit" className="m-2 btn-lg btn-primary" style={{ backgroundColor: "#50b5ff", border: "0", color: "white", padding: "0px 15px" }} value="Comment" />
                                             </form>
                                         </div>
                                     </Card.Body>
@@ -627,34 +654,22 @@ const Index = () => {
                                 </div>
                             </div>
                             <Card.Body>
+                               
                                 <ul className="media-story list-inline m-0 p-0">
+                                
                                     <li className="d-flex mb-4 align-items-center ">
                                         <img src={user8} alt="story1" className="rounded-circle img-fluid" />
                                         <div className="stories-data ms-3">
-                                            <h6>imTraderTradingContest</h6>
+                                                <h6></h6>
                                             <p className="mb-0"><span>438 views</span> </p>
                                             <p><span>340 Discusse</span><em style={{ color: 'red', marginLeft: '4px' }}>+3</em></p>
                                         </div>
                                     </li>
-                                    <li className="d-flex mb-4 align-items-center ">
-                                        <img src={user2} alt="story1" className="rounded-circle img-fluid" />
-                                        <div className="stories-data ms-3">
-                                            <h6>BeginnerTalk</h6>
-                                            <p className="mb-0"><span>438 views</span> </p>
-                                            <p><span>340 Discusse</span><em style={{ color: 'red', marginLeft: '4px' }}>+6</em></p>
-                                        </div>
-                                    </li>
-                                    <li className="d-flex mb-4 align-items-center ">
-                                        <img src={user6} alt="story1" className="rounded-circle img-fluid" />
-                                        <div className="stories-data ms-3">
-                                            <h6>FollowMe Report</h6>
-                                            <p className="mb-0"><span>438 views</span> </p>
-                                            <p><span>340 Discusse</span><em style={{ color: 'red', marginLeft: '4px' }}>+2</em></p>
-                                        </div>
-                                    </li>
-
-
+                                
+                                    
+                                    
                                 </ul>
+                                
                             </Card.Body>
                         </Card>
 
@@ -680,16 +695,20 @@ const Index = () => {
                             </div>
                             <Card.Body>
                                 <ul className="media-story list-inline m-0 p-0">
+                                    
+                                       
                                     <li className="d-flex mb-4 align-items-center justify-content-around ">
                                         <img src={user8} alt="story1" className="rounded-circle img-fluid" />
                                         <div className="stories-data ">
-                                            <h6>Nim Doe</h6>
+                                            <h6></h6>
 
                                         </div>
                                         <div>
-                                            <button className="btn btn-outline-primary btn-sm">Follow</button>
+                                        {/* onClick={()=> getfollow(userid)} is followed? follow:unfollow */}
+                                            <button className="btn btn-outline-primary btn-sm" >Follow</button>
                                         </div>
                                     </li>
+                                     
                                     <li className="d-flex mb-4 align-items-center justify-content-around ">
                                         <img src={user2} alt="story1" className="rounded-circle img-fluid" />
                                         <div className="stories-data ">
