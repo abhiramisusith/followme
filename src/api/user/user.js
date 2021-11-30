@@ -10,7 +10,8 @@ const postAdminLogin = payload => apis.post('/WebPanelLogin', payload)
 const postLogout = () => apis.post('/Logout')
 const postSignUp = payload => apis.post('/Register', payload)
 const postResetPasswordThroughEmail = payload => apis.get(`/ResetPasswordThroughEmail?Email=${payload}`)
-
+const postChangePassword = payload => apis.post("/ChangePassword", payload.changePassword, { headers: { "Authorization": `Bearer ${payload.token}` } })
+const postAddUserAddress = payload => apis.post("/AddUserAddress", payload, { headers: { "Authorization": `Bearer ${payload.token}` } })
 
 
 
@@ -24,7 +25,9 @@ export {
     postSignUp,
     postAdminLogin,
     postLogout,
-    postResetPasswordThroughEmail
+    postResetPasswordThroughEmail,
+    postAddUserAddress,
+    postChangePassword
 
 
 }

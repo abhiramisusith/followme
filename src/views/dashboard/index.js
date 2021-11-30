@@ -31,10 +31,11 @@ const Index = () => {
     const handleShow = () => setShow(true);
     const [iscomment, setIsComment] = useState(false);
     const [allPost, setAllPost] = useState([])
-    const [allFollower, setAllFollower] = useState([])
-    const [allTrends,setAllTrends] = useState([])
+    const [allFollower,setAllFollower] = useState([])
+    const [allFollowings,setAllFollowings] = useState([])
+    const [allTrends, setAllTrends] = useState([])
     const [Post_Id, setPost_Id] = useState(0)
-    const [follow_Id,setFollow_Id]=useState(0)
+    const [follow_Id, setFollow_Id]=useState(0)
     const [hidepostId, setHidePostId] = useState(0)
     const [text, setText] = useState('')
     const [islikedcomment, setIslikedComment] = useState(false)
@@ -65,24 +66,6 @@ const Index = () => {
         Post_Id: 1,
         ParentComment_Id: 1
     })
-    const hadnleChage = (e) => {
-        let val = e.target.vlaue;
-        setPost({
-            ...post,
-            [e.target.name]: val
-        })
-    }
-    const handleSubmit = async (e, n) => {
-        e.preventDefault();
-        console.log(n)
-        const token = sessionStorage.getItem('Token');
-        if (iscomment == false) {
-            await postComment({ comment, token }).then(res => console.log(res.data)).then(alert('we create the first comment'))
-        } else {
-            await postCommentReply({ replycomment, token }).then(res => console.log(res.data)).then(alert('we create the first reply '))
-        }
-    }
-
     const handleClick = async () => {
         const token = sessionStorage.getItem('Token')
         await postCreatePost({ post, token }).then(res => console.log(res.data))
@@ -160,16 +143,14 @@ const Index = () => {
         console.log(commentorreply)
         console.log(text)
     }
-    const getfollowings = async () => {
+    const getfollower = async ()=>{
         const token = sessionStorage.getItem('Token')
-        await getGetFollowings({ token }).then(res => console.log(res.data))
+        await getGetFollowers({token}).then(res=>setAllFollower(res.data['Result']))
     }
-    const getfollower = async () => {
-        const token = sessionStorage.getItem('Token')
-        setIsFollowed(!isfollowed)
-        await getGetFollowers({ token }).then(res => setAllFollower(res.data['Result']))
-        setIsFollowed(!isfollowed)
-    }
+     const getfollowings = async ()=>{
+     const token = sessionStorage.getItem('Token')
+     await getGetFollowings({token}).then(res=>setAllFollowings(res.data['Result']))
+  }
     const gettopfollowers = async () => {
         const token = sessionStorage.getItem('Token')
         setIsFollowed(!isfollowed)
@@ -195,17 +176,17 @@ const Index = () => {
     return createdDateTime;
    
     }
-  
     useEffect(() => {
-        getPosts()
         gettrends()
+        getPosts()
+        getfollower()
         getfollowings()
         // gettopfollowers()
+      
     }, [isliked,islikedcomment,isfollowed,ishided])
     return (
         <>
-        {console.log(allTrends)}
-        {console.log(allPost)}
+       {console.log(allTrends)}
             <Container>
                 <Row>
                     <Col lg={8} className="row m-0 p-0">
@@ -233,13 +214,12 @@ const Index = () => {
                                     <ul className=" post-opt-block d-flex list-inline m-0 p-0 flex-wrap">
 
                                         <li className="me-3 mb-md-0 mb-2">
-
-
                                             <label className=" btn btn-soft-primary"> <img src={img1} alt="" /> Photo/Video
                                                 <input type="file" style={{ display: "none" }} placeholder="Enter Image" onChange={(e) => setPost({
                                                     ...post,
                                                     ImageUrls: e.target.value
-                                                })} /></label>
+                                                })} />
+                                            </label>
 
                                         </li>
                                         <li className="me-3 mb-md-0 mb-2">
@@ -311,9 +291,8 @@ const Index = () => {
                                                         <input type="file" style={{ display: "none" }} placeholder="Enter Image" onChange={(e) => setPost({
                                                             ...post,
                                                             ImageUrls: e.target.value
-                                                        })} /></label>
-
-
+                                                        })} />
+                                                    </label>
                                                 </div>
                                             </li>
                                             <li className="col-md-6 mb-3">
@@ -329,8 +308,6 @@ const Index = () => {
                                                                     {allFollower.map(follow =>
                                                                         <Dropdown.Item key={Math.random(10)} onClick={(e) => setPost({ ...post, UserTagId: [...post['UserTagId'], follow.FirstUser.Id] })} href="#">{follow.FirstUser.FullName}</Dropdown.Item>
                                                                     )}
-
-
                                                                 </Dropdown.Menu>
                                                             </Dropdown>
                                                         </div>
@@ -444,19 +421,11 @@ const Index = () => {
                                                         <div>
                                                             <h5 className="mb-0 d-inline-block">{item.User.FullName}</h5>
                                                             <span className="mb-0 ps-1 d-inline-block">Added a post</span>
-                                                           
-                                                            <p className="mb-0 text-primary">
-                                                            <Moment fromNow>{newDate(item.CreatedDate)}</Moment>
-                                                        
-                                                                
-                                                            </p>
+                                                            <p className="mb-0 text-primary"><Moment fromNow>{newDate(item.CreatedDate)}</Moment></p>
                                                         </div>
                                                         <div>
-
                                                             <button className="btn btn-sm btn-soft-primary" onClick={()=> item.IsUserFollow?<>{getunfollow(item.User_Id)}</>:getfollow(item.User_Id)}>{item.IsUserFollow?"Un Follow":"Follow"}</button>
-                                                            
                                                         </div>
-
                                                         <div className="card-post-toolbar">
                                                             <Dropdown>
                                                                 <Dropdown.Toggle className="bg-transparent border-white">
@@ -519,7 +488,6 @@ const Index = () => {
                                                     <div className="row-span-2 row-span-md-1" key={val.Id}>
                                                         <img src={val.Url} alt="image" className="img-fluid rounded w-100" />
                                                     </div>
-
                                                 )}
                                             </div>
                                         </div>
@@ -531,12 +499,9 @@ const Index = () => {
                                                             <Dropdown>
                                                                 <Dropdown.Toggle as={CustomToggle} >
                                                                     <a onClick={() => { item.IsLiked ? getunlikes(item.Id) : getlikes(item.Id) }}>
-
                                                                         <i className={item.IsLiked ? "las la-heart" : "lar la-heart"} id="like" style={{ fontSize: "26px", color: "red" }}></i>
                                                                     </a>
-
                                                                 </Dropdown.Toggle>
-
                                                             </Dropdown>
                                                         </div>
                                                         <div className="total-like-block ms-2 me-3">
@@ -544,7 +509,6 @@ const Index = () => {
                                                                 <Dropdown.Toggle as={CustomToggle} id="post-option" >
                                                                     {item.LikesCount}
                                                                 </Dropdown.Toggle>
-
                                                             </Dropdown>
                                                         </div>
                                                     </div>
@@ -553,7 +517,6 @@ const Index = () => {
                                                             <Dropdown.Toggle as={CustomToggle} id="post-option" >
                                                                 {item.CommentsCount ? <> {item.CommentsCount} Commented</> : ""}
                                                             </Dropdown.Toggle>
-
                                                         </Dropdown>
                                                     </div>
                                                 </div>
@@ -564,8 +527,6 @@ const Index = () => {
                                                 <li className="mb-2">
                                                     {item.Comments.map(val =>
                                                         <div className="d-flex" key={val.Id}>
-
-
                                                             <>
                                                                 <div className="user-img" >
                                                                     <img className="avatar-35 rounded-circle img-fluid" />
@@ -582,7 +543,7 @@ const Index = () => {
                                                                                 }
                                                                            
                                                                         </a>
-                                                                        <span style={{fontSize:"14px",marginRight:"7px",color:"rgb(80, 181, 255)"}}>{val.LikesCount}</span>
+                                                                        <span style={{fontSize:"14px",marginRight:"7px",color:"rgb(80, 181, 255)"}}>{val.LikesCount ? <>{val.LikesCount}</>:<></>}</span>
                                                                         {/* <Link to="#" onClick={()=>{getlikecomment(val.Id)}}>Like</Link> */}
                                                                         <Link to="#" onClick={() => {
                                                                             setTimeout(() => {
@@ -599,8 +560,6 @@ const Index = () => {
                                                                     </div>
                                                                 </div>
                                                             </>
-
-
                                                         </div>
                                                     )}
                                                 </li>
@@ -618,19 +577,15 @@ const Index = () => {
                                         </div>
                                     </Card.Body>
                                 </Card>
-
-
                             </Col>
                         )}
 
                     </Col>
                     <Col lg={4}>
                         <Card>
-
                             <Card.Body className="d-flex flex-column justify-content-center align-items-center">
                                 <button className="btn btn-soft-primary mb-2" style={{ width: "200px" }}>Connect Account</button>
                                 <button className="btn btn-soft-primary mb-2" style={{ width: "200px" }}>Be a signal provider</button>
-
                             </Card.Body>
                         </Card>
 
@@ -655,20 +610,15 @@ const Index = () => {
                                 </div>
                             </div>
                             <Card.Body>
-                               
-                                <ul className="media-story list-inline m-0 p-0">
-                                
-                                    <li className="d-flex mb-4 align-items-center ">
-                                        <img src={user8} alt="story1" className="rounded-circle img-fluid" />
+                               <ul className="media-story list-inline m-0 p-0">
+                                  <li className="d-flex mb-4 align-items-center " key={Math.random(10)}>
+                                        {/* <img src={user8} alt="story1" className="rounded-circle img-fluid" /> */}
                                         <div className="stories-data ms-3">
                                                 <h6></h6>
                                             <p className="mb-0"><span>438 views</span> </p>
                                             <p><span>340 Discusse</span><em style={{ color: 'red', marginLeft: '4px' }}>+3</em></p>
                                         </div>
                                     </li>
-                                
-                                    
-                                    
                                 </ul>
                                 
                             </Card.Body>
@@ -696,13 +646,10 @@ const Index = () => {
                             </div>
                             <Card.Body>
                                 <ul className="media-story list-inline m-0 p-0">
-                                    
-                                       
                                     <li className="d-flex mb-4 align-items-center justify-content-around ">
                                         <img src={user8} alt="story1" className="rounded-circle img-fluid" />
                                         <div className="stories-data ">
                                             <h6></h6>
-
                                         </div>
                                         <div>
                                         {/* onClick={()=> getfollow(userid)} is followed? follow:unfollow */}
@@ -723,14 +670,11 @@ const Index = () => {
                                         <img src={user6} alt="story1" className="rounded-circle img-fluid" />
                                         <div className="stories-data">
                                             <h6>Angel Mary</h6>
-
                                         </div>
                                         <div>
                                             <button className="btn btn-outline-primary btn-sm" >Follow</button>
                                         </div>
                                     </li>
-
-
                                 </ul>
                             </Card.Body>
                         </Card>

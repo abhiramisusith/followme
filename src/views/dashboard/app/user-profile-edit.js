@@ -1,14 +1,27 @@
 import React from 'react'
 import {Container, Row, Col, Card, Tab, Form, Button, Nav} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-
+import { postChangePassword } from '../../../api/user/user'
+import { useState,useEffect } from 'react'
 //image
 import img1 from '../../../assets/images/user/11.png'
 
 const UserProfileEdit =() =>{
-  return(
+    const [changePassword, setChangePassword] = useState({
+        OldPassword:"",
+        NewPassword:"",
+        ConfirmPassword:"",
+        SignInType:0
+    })
+    const handleClick = async () => {
+        const token = sessionStorage.getItem('Token')
+        await postChangePassword({ changePassword, token }).then(alert("password change successful"))
+    }
+    useEffect(() => {
+    }, [])
+    return(
       <>
-        <Container>
+      <Container>
             <Tab.Container defaultActiveKey="first">
           <Row>
               <Col lg="12">
@@ -161,18 +174,34 @@ const UserProfileEdit =() =>{
                                         <Form.Group className="form-group">
                                             <Form.Label htmlFor="cpass" className="form-label">Current Password:</Form.Label>
                                             <Link to="#" className="float-end">Forgot Password</Link>
-                                            <Form.Control type="Password" className="form-control" id="cpass" defaultValue=""/>
+                                            <input type="password" className="form-control rounded"  onChange={(e) => setChangePassword({
+                                                            ...changePassword,
+                                                            OldPassword: e.target.value
+                                                        })}
+                                              />
+                                         
                                         </Form.Group>
                                         <Form.Group className="form-group">
                                             <Form.Label htmlFor="npass" className="form-label">New Password:</Form.Label>
-                                            <Form.Control type="Password" className="form-control" id="npass" defaultValue=""/>
+                                            <input type="password" className="form-control rounded"  onChange={(e) => setChangePassword({
+                                                            ...changePassword,
+                                                            NewPassword: e.target.value
+                                                        })}
+                                              />
+                                            
+                                        
                                         </Form.Group>
                                         <Form.Group className="form-group">
                                             <Form.Label htmlFor="vpass" className="form-label">Verify Password:</Form.Label>
-                                            <Form.Control type="Password" className="form-control" id="vpass" defaultValue=""/>
+                                            <input type="password" className="form-control rounded"  onChange={(e) => setChangePassword({
+                                                            ...changePassword,
+                                                            ConfirmPassword: e.target.value
+                                                        })}
+                                             />
+                                           
                                         </Form.Group>
-                                        <Button type="submit" className="btn btn-primary me-2">Submit</Button>
-                                        <Button type="reset" className="btn btn-light">Cancel</Button>
+                                        <button type="submit" className="btn btn-primary m-3 px-3 float-end"  onClick={handleClick}>save</button>
+                                      
                                     </Form>
                                   </Card.Body>
                               </Card>

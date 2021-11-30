@@ -75,15 +75,6 @@ const UserProfile =() =>{
    const handleClose = () => setShow(false);
    const handleShow = () => setShow(true);
    const [allPost,setAllPost] = useState([])
-
- 
- 
-    
- 
-
-
-
-
    const [tagName,setTagName]=useState('')
    const [allFollower,setAllFollower] = useState([])
    const [allNotification,setAllNotification] = useState([])
@@ -108,9 +99,6 @@ const UserProfile =() =>{
    Post_Id:0,
    ParentComment_Id:0
    })
-
-
-
    const getlikecomment = async (id) => {
       setComment_Id(id)
       console.log(comment_Id)
@@ -182,7 +170,7 @@ const UserProfile =() =>{
    } 
    const getPosts = async(id)=>{
    const token = sessionStorage.getItem('Token')
-   const data = {userid:id,pagesize:13,pageno:0};
+   const data = {userid:id,pagesize:30,pageno:0};
    await getGetPostsByUserId({data,token}).then(res=>setAllPost(res.data['Result'].Posts))
    }
    const getfollower = async ()=>{
@@ -192,11 +180,13 @@ const UserProfile =() =>{
    const getfollowings = async ()=>{
    const token = sessionStorage.getItem('Token')
    await getGetFollowings({token}).then(res=>setAllFollowings(res.data['Result']))
+}
+
    const gettopfollowers = async ()=>{
    const token = sessionStorage.getItem('Token')
    await getGetTopFollowers({token}).then(res =>console.log(res.data))
    }
-}
+
    const getnotifi = async (id)=>{
       const token = sessionStorage.getItem('Token')
       const data = {userid:id,SignInType:0};
@@ -221,80 +211,74 @@ useEffect(() => {
    getnotifi()
    // gettopfollowers()
 }, [isliked,islikedcomment])
+
 return(
-      <>
-
-
-      {console.log(allPost)}
-        <Container>
-
-        
-            <Row>
-               <Col sm={12}>
-                  <Card>
-                     <Card.Body className=" profile-page p-0">
-                        <div className="profile-header">
-                           <div className="position-relative">
-                              <img src={img1} alt="profile-bg" className="rounded img-fluid"/>
-                              <ul className="header-nav list-inline d-flex flex-wrap justify-end p-0 m-0">
-                                 <li><Link to="#"><i className="ri-pencil-line"></i></Link></li>
-                                 <li><Link to="#"><i className="ri-settings-4-line"></i></Link></li>
+   <>
+      <Container>
+         <Row>
+            <Col sm={12}>
+               <Card>
+                  <Card.Body className=" profile-page p-0">
+                     <div className="profile-header">
+                        <div className="position-relative">
+                           <img src={img1} alt="profile-bg" className="rounded img-fluid"/>
+                           <ul className="header-nav list-inline d-flex flex-wrap justify-end p-0 m-0">
+                              <li><Link to="#"><i className="ri-pencil-line"></i></Link></li>
+                              <li><Link to="#"><i className="ri-settings-4-line"></i></Link></li>
+                           </ul>
+                        </div>
+                        <div className="user-detail text-center mb-3">
+                           <div className="profile-img">
+                              <img src={img2} alt="profile-img1" className="avatar-130 img-fluid" />
+                           </div>
+                           <div className="profile-detail">
+                              <h3>{localStorage.getItem('FullName')}</h3>
+                           </div>
+                        </div>
+                        <div className="profile-info p-3 d-flex align-items-center justify-content-between position-relative">
+                           <div className="social-links">
+                              <ul className="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
+                                 <li className="text-center pe-3">
+                                    <Link to="#"><img src={img3} className="img-fluid rounded" alt="facebook"/></Link>
+                                 </li>
+                                 <li className="text-center pe-3">
+                                    <Link to="#"><img src={img4} className="img-fluid rounded" alt="Twitter"/></Link>
+                                 </li>
+                                 <li className="text-center pe-3">
+                                    <Link to="#"><img src={img5} className="img-fluid rounded" alt="Instagram"/></Link>
+                                 </li>
+                                 <li className="text-center pe-3">
+                                    <Link to="#"><img src={img6} className="img-fluid rounded" alt="Google plus"/></Link>
+                                 </li>
+                                 <li className="text-center pe-3">
+                                    <Link to="#"><img src={img7} className="img-fluid rounded" alt="You tube"/></Link>
+                                 </li>
+                                 <li className="text-center md-pe-3 pe-0">
+                                    <Link to="#"><img src={img8} className="img-fluid rounded" alt="linkedin"/></Link>
+                                 </li>
                               </ul>
                            </div>
-                           <div className="user-detail text-center mb-3">
-                              <div className="profile-img">
-                                 <img src={img2} alt="profile-img1" className="avatar-130 img-fluid" />
-                              </div>
-                              <div className="profile-detail">
-                                 <h3>{localStorage.getItem('FullName')}</h3>
-                              </div>
+                           <div className="social-info">
+                              <ul className="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
+                                 <li className="text-center ps-3">
+                                    <h6>Posts</h6>
+                                    <p className="mb-0">{allPost.length}</p>
+                                 </li>
+                                 <li className="text-center ps-3">
+                                    <h6>Followers</h6>
+                                    <p className="mb-0">{allFollower.length}</p>
+                                 </li>
+                                 <li className="text-center ps-3">
+                                    <h6>Following</h6>
+                                    <p className="mb-0">{allFollowings.length}</p>
+                                 </li>
+                              </ul>
                            </div>
-                           <div className="profile-info p-3 d-flex align-items-center justify-content-between position-relative">
-                              <div className="social-links">
-                                 <ul className="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
-                                    <li className="text-center pe-3">
-                                       <Link to="#"><img src={img3} className="img-fluid rounded" alt="facebook"/></Link>
-                                    </li>
-                                    <li className="text-center pe-3">
-                                       <Link to="#"><img src={img4} className="img-fluid rounded" alt="Twitter"/></Link>
-                                    </li>
-                                    <li className="text-center pe-3">
-                                       <Link to="#"><img src={img5} className="img-fluid rounded" alt="Instagram"/></Link>
-                                    </li>
-                                    <li className="text-center pe-3">
-                                       <Link to="#"><img src={img6} className="img-fluid rounded" alt="Google plus"/></Link>
-                                    </li>
-                                    <li className="text-center pe-3">
-                                       <Link to="#"><img src={img7} className="img-fluid rounded" alt="You tube"/></Link>
-                                    </li>
-                                    <li className="text-center md-pe-3 pe-0">
-                                       <Link to="#"><img src={img8} className="img-fluid rounded" alt="linkedin"/></Link>
-                                    </li>
-                                 </ul>
-                              </div>
-                              <div className="social-info">
-                                 <ul className="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
-                                    <li className="text-center ps-3">
-                                       <h6>Posts</h6>
-                                       
-                                       <p className="mb-0">{allPost.length}</p>
-                                    </li>
-                                    <li className="text-center ps-3">
-                                       <h6>Followers</h6>
-                                    
-                                       <p className="mb-0">{allFollower.length}</p>
-                                    </li>
-                                    <li className="text-center ps-3">
-                                       <h6>Following</h6>
-                                       <p className="mb-0">{allFollowings.length}</p>
-                                    </li>
-                                 </ul>
-                              </div>
-                          </div>
                         </div>
-                     </Card.Body>
-                  </Card>
-               </Col>
+                     </div>
+                  </Card.Body>
+               </Card>
+            </Col>
                <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                   <div className="card p-0">
                      <div className="card-body p-0">
@@ -442,7 +426,7 @@ return(
                                  </Col>
 
                        
-                                 <Col lg={8}>
+                              <Col lg={8}>
                    
                                  <Col sm={12} >
                             <Card id="post-modal-data" className="card-block card-stretch card-height">
@@ -742,29 +726,18 @@ return(
                                                     <div className="d-flex align-items-center">
                                                         <div className="like-data">
                                                             <Dropdown>
-
-                                                               
-                                                            <Dropdown.Toggle  as={CustomToggle} >
-                                                            <a onClick={() => { item.IsLiked ? getunlikes(item.Id) : getlikes(item.Id) }}>
-
-                                                                        <i className={item.IsLiked ? "las la-heart" : "lar la-heart"} id="like" style={{ fontSize: "26px", color: "red" }}></i>
-                                                                        </a>
-                                                                                                                                                
-                                                                </Dropdown.Toggle>
-                                                              
-
+                                                               <Dropdown.Toggle  as={CustomToggle} >
+                                                                  <a onClick={() => { item.IsLiked ? getunlikes(item.Id) : getlikes(item.Id) }}>
+                                                                     <i className={item.IsLiked ? "las la-heart" : "lar la-heart"} id="like" style={{ fontSize: "26px", color: "red" }}></i>
+                                                                  </a>
+                                                               </Dropdown.Toggle>
                                                             </Dropdown>
                                                         </div>
                                                         <div className="total-like-block ms-2 me-3">
                                                             <Dropdown>
-
-                                                                <Dropdown.Toggle as={CustomToggle}  id="post-option" >
-                                                                {item.LikesCount}
-                                                                </Dropdown.Toggle>
-                                                               
-                                                              
-                                                               
-
+                                                               <Dropdown.Toggle as={CustomToggle}  id="post-option" >
+                                                               {item.LikesCount}
+                                                               </Dropdown.Toggle>
                                                             </Dropdown>
                                                         </div>
                                                     </div>
@@ -783,26 +756,22 @@ return(
                                             <li className="mb-2">
                                             {item.Comments.map(val=>
                                                 <div className="d-flex"key={val.Id}>
-                                                    
-                                                    
-                                                    <>
+                                                  <>
                                                     <div className="user-img" >
                                                     <img  className="avatar-35 rounded-circle img-fluid"/>
                                                 </div>
-                                                            <div className="comment-data-block ms-3">
-                                                                <h6>{item.User.FullName}</h6>
-                                                                
-                                                                <p className="mb-0">{val.Text}</p>
-                                                                <div className="d-flex flex-wrap align-items-center comment-activity">
-                                                                <a style={{cursor:"pointer"}} onClick={() => { val.IsLiked ? getunlikecomment(val.Id) : getlikecomment(val.Id) }}>
-                                                                                {
-                                                                                    val.IsLiked ? <> <i className="las la-heart"style={{ fontSize: "15px",color:"rgb(80, 181, 255)"}}></i></>:
-                                                                                    <i className= "lar la-heart" style={{ fontSize: "15px"}}></i>
-                                                                                }
-                                                                           
-                                                                        </a>
-                                                                    <span style={{fontSize:"14px",marginRight:"7px",color:"rgb(80, 181, 255)"}}>{val.LikesCount}</span>
-                                                                    <Link to="#"onClick={()=>{
+                                                <div className="comment-data-block ms-3">
+                                                   <h6>{item.User.FullName}</h6>
+                                                     <p className="mb-0">{val.Text}</p>
+                                                         <div className="d-flex flex-wrap align-items-center comment-activity">
+                                                            <a style={{cursor:"pointer"}} onClick={() => { val.IsLiked ? getunlikecomment(val.Id) : getlikecomment(val.Id) }}>
+                                                               {
+                                                               val.IsLiked ? <> <i className="las la-heart"style={{ fontSize: "15px",color:"rgb(80, 181, 255)"}}></i></>:
+                                                               <i className= "lar la-heart" style={{ fontSize: "15px"}}></i>
+                                                               }
+                                                            </a>
+                                                            <span style={{fontSize:"14px",marginRight:"7px",color:"rgb(80, 181, 255)"}}>{val.LikesCount ? <>{val.LikesCount}</>:<></>}</span>
+                                                            <Link to="#"onClick={()=>{
                                                                        setTimeout(()=>{
                                                                         setIsComment(false)
                                                                        },10000)
@@ -812,20 +781,15 @@ return(
                                                                           Post_Id:item.Id,
                                                                           ParentComment_Id:val.Id
                                                                        })
-                                                                   }} >reply</Link>
-                                                                    <Link to="#">translate</Link>
-                                                                   
-                                                                    
-                                                                </div>
+                                                            }} >reply</Link>
+                                                            <Link to="#">translate</Link>
                                                             </div>
-                                                            </>
-                                                   
-
-                                                </div>
+                                                         </div>
+                                                      </>
+                                                   </div>
                                                  )}
                                             </li>
-                                         
-                                                 </ul>
+                                       </ul>
                                         <form className="comment-text d-flex align-items-center mt-3" onSubmit={(e,n)=>handleRequest(e,item)}  >
                                             <input type="text" className="form-control rounded" placeholder="Enter Your Comment" onChange={(e)=>setCommentorReply({
                                                ...commentorreply,
@@ -838,8 +802,6 @@ return(
                                     </div>
                                 </Card.Body>
                             </Card>
-
-                        
                         </Col>
                         )}
                         </Col>
